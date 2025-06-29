@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chef Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Chef Dashboard</h1>
+  <ul id="orderList"></ul>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+  <script src="firebase-config.js"></script>
+  <script>
+    const db = firebase.firestore();
+    const orderList = document.getElementById("orderList");
+
+    db.collection("orders").onSnapshot(snapshot => {
+      orderList.innerHTML = "";
+      snapshot.forEach(doc => {
+        const order = doc.data();
+        const li = document.createElement("li");
+        li.textContent = `Table: ${order.table || 'N/A'} - Order: ${order.item}`;
+        orderList.appendChild(li);
+      });
+    });
+  </script>
+</body>
+</html>
